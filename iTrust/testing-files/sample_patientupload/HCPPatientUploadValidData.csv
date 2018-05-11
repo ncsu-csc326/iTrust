@@ -1,0 +1,4 @@
+firstName,lastName,email,phone,streetAddress1,streetAddress2,city,state,zip,motherMID,fatherMID,creditCardType,creditCardNumber
+Michael,Marley,michael@michaelmarley.com,555-555-5555,0000 Fake St,Fictional Apt 2,Raleigh,NC,11111-1111,0,0,VISA,4544182174537267
+Michael,Bazik,mdbazik@ncsu.edu,555-555-5555,0000 Fake St,Fictional Apt 2,Raleigh,NC,11111-1111,0,0,VISA,4544182174537267
+Barry,Peddycord,bwpeddyc@ncsu.edu,555-555-5555,0000 Fake St,Fictional Apt 2,Raleigh,NC,11111-1111,0,0,VISA,4544182174537267
