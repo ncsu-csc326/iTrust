@@ -1,0 +1,32 @@
+
++ Anything that you did not finish
+    hashing credit card numbers
+    
++ Any major design decisions you made; interpretations of the assignment that you think the TA should know about
+   We stuck with the requirements as assigned, adding a page to view bills and another page to pay bills
+   for the patient. Payment amounts are typed in a text box by the HCP. Default is $100.
+    
++ The tests you added (doesn't need to be detailed, just the package and a few classes would suffice)
+    unittest: 
+    	-action:EditOfficeVisitActionTest, action:ViewMyBillingActionTest, action:PayBillActionTest
+    	-edu.ncsu.csc.itrust.dao.billing 
+    	-bean:BillingBeanLoaderTest
+    	-dao:UpdateOfficeVisitTest
+    httptest: DocumentOfficeVisitTest, OfficeVisitBillingTest, NotificationAreaTest
+
++ Anything else you think the TA should know about before grading
+	The following tests pass in Eclipse but fail in Jenkins:
+		edu.ncsu.csc.itrust.http.OfficeVisitBillingTest.testCancelPayment
+ 		edu.ncsu.csc.itrust.http.OfficeVisitBillingTest.testCreditCard	
+ 		edu.ncsu.csc.itrust.http.OfficeVisitBillingTest.testInsurance	
+ 		edu.ncsu.csc.itrust.http.OfficeVisitBillingTest.testPaymentLogging	
+ 		edu.ncsu.csc.itrust.http.OfficeVisitBillingTest.testViewBilling	
+ 		edu.ncsu.csc.itrust.http.OfficeVisitBillingTest.testIncorrectData	
+ 		edu.ncsu.csc.itrust.http.OfficeVisitBillingTest.testBadPolicyID
+ 		
+ 	They all get "Error on HTTP request: 500 Internal Error". Working with the TAs, we were unable to
+ 	figure out why this was happening.
+
+ 	
+ 	
+

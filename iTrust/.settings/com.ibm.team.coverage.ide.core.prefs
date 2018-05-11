@@ -1,0 +1,2 @@
+com.ibm.team.coverage.ide.core.filter=<?xml version\="1.0" encoding\="UTF-8"?><filter><pattern expression\="*Test" scope\="\=iTrust/unittests" type\="1"/><pattern expression\="*" scope\="\=iTrust/httptests" type\="1"/></filter>
+eclipse.preferences.version=1
