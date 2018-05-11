@@ -1,0 +1,4 @@
+firstName,lastName,email,invalidfield
+Michael,Marley,michael@michaelmarley.com,
+Michael,Bazik,mdbazik@ncsu.edu,
+"Weird,Comma",Name,test@example.com,

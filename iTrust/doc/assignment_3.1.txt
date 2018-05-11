@@ -1,0 +1,15 @@
+
++ Anything that you did not finish
+    N/A
++ Any major design decisions you made; interpretations of the assignment that you think the TA should know about
+    Servlets were a big deal
+    
++ The tests you added (doesn't need to be detailed, just the package and a few classes would suffice)
+    GroupReportActionTest, XmlGeneratorTest
+
++ Anything else you think the TA should know about before grading
+	Servlets are in the awkward place between GUI and Controllers, and are very difficult to test with JUnit as you
+	cannot inject anything except for the HTTPRequest and HTTPServlet. Because of this, any DAO methods will fail unless
+	they are superficial servlets. Our servlet has a below 80% code coverage rate, but all of the references they have
+	to the XmlGenerator and GroupReportAction are well above the 80% threshhold.
+

@@ -1,0 +1,62 @@
++ Anything that you did not finish
+    I believe that I added everything that asked for in this version of iTrust. I may have missed something in the assignment,
+    but for the most part, I believe that I added everything.
+    
++ Any major design decisions you made; interpretations of the assignment that you think the TA should know about
+  The major design decision was my interpretation of how UAPs would view the insurance claims that were made. My interpretation
+  of this allows all UAPs to view all insurance claims.
+    
++ The tests you added (doesn't need to be detailed, just the package and a few classes would suffice)
+    unittest: 
+    	-action:EditOfficeVisitActionTest, action:ViewMyBillingActionTest, action:PayBillActionTest
+    	-edu.ncsu.csc.itrust.action : ViewClaimsActionTest.java
+    								  VerifyClaimsActionTest.java
+    httptest: InsuranceNotificationTest.java, InsuranceSubmissionTest.java
+
++ Anything else you think the TA should know about before grading
+	There were quite a few things that were missing in the version of iTrust that I began with (ie time and date tracking of bills).
+	This is the reason why there are so many changed files.
+
+JSP Files changed / added:
+patient/payBill.jsp
+patient/requestRecordsRelease.jsp
+patient/notificationArea.jsp
+uap/verifyClaim.jsp -- Added
+uap/notificationArea.jsp
+uap/viewClaims.jsp -- Added
+hcp-uap/editOfficeVisit.jsp
+
+Java test files changed / added:
+RequestRecordsReleaseTest.java
+DependentsTest.java
+OfficeVisitBillingTest.java
+InsuranceNotificationTest.java -- Added
+InsuranceSubmissionTest.java -- Added
+PayBillActionTest.java
+ViewClaimsActionTest.java -- Added
+BillingBeanLoaderTest.java
+BillingDAOTest.java
+DocumentOfficeVisitTest.java
+VerifyClaimActionTest.java -- Added
+
+Java files changed / added:
+EditOfficeVisitAction.java
+OfficeVisitDAO.java
+RecordsReleaseServlet.java
+BillingBean.java
+PayBillAction.java
+BillingBeanLoader.java
+BillingDAO.java
+ViewClaimsAction.java -- Added
+VerifyClaimsAction.java -- Added
+
+TransactionType.java
+
+etc. changed / added:
+BlackBoxTestPlan.xml
+
+createTables.sql
+uc60.sql
+
+approved.png
+denied.png
