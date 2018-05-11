@@ -1,0 +1,1 @@
+This file contains no LOINC data and should fail the LOINC file verification process.
