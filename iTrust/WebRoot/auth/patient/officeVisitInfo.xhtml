@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageStyle">
+			<link rel="stylesheet" href="/iTrust/css/officevisitinfo.css" />
+			<link rel="stylesheet" href="/iTrust/css/form-layout.css" />
+			<link rel="stylesheet" href="/iTrust/css/tab-layout.css" />
+		</ui:define>
+		<ui:define name="pageTitle">Office Visit</ui:define>
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/patient/menu.jsp" />
+		</ui:define>
+		<ui:define name="mainContent">
+			<h:message for="" id="officevisitinfo-message" class="iTrustError" />
+			<h3>View Office Visit</h3>
+			<div class="tab-group">
+				<input id="tab-general" type="radio" name="ovtabs" checked="checked" />
+				<label for="tab-general">General Information</label>
+				<c:if test="#{office_visit_form.isOfficeVisitCreated()}">
+					<input id="tab-health-metrics" type="radio" name="ovtabs" />
+					<label for="tab-health-metrics">Health Metrics</label>
+					
+					<input id="tab-prescriptions" type="radio" name="ovtabs" />
+					<label for="tab-prescriptions">Prescribed Medications</label>
+					
+					<input id="tab-lab-procedure" type="radio" name="ovtabs" />
+					<label for="tab-lab-procedure">Lab Procedure</label>
+					
+					<input id="tab-daignoses" type="radio" name="ovtabs" />
+					<label for="tab-daignoses">Diagnoses</label>
+					
+					<input id="tab-medical-procedures" type="radio" name="ovtabs" />
+					<label for="tab-medical-procedures">Medical Procedures</label>
+					
+					<input id="tab-immunizations" type="radio" name="ovtabs" />
+					<label for="tab-immunizations">Immunizations</label>
+				</c:if>
+
+				<div class="tab-content">
+					<div class="tab-panel" id="content-general">
+						<ui:include src="/auth/patient/viewOfficeVisitForm.xhtml"></ui:include>
+					</div>
+
+					<c:if test="#{office_visit_form.isOfficeVisitCreated()}">
+						<div class="tab-panel" id="content-health-metrics">
+							<ui:include src="/auth/patient/viewBasicHealthMetricsForm.xhtml"></ui:include>
+						</div>
+	
+						<!-- Prescriptions -->
+						<div class="tab-panel" id="content-prescriptions">
+							<ui:include src="/auth/patient/viewPrescriptions.xhtml"></ui:include>
+						</div>
+	
+						<!--  LAB PROCEDURES -->
+						<div class="tab-panel" id="content-lab-procedure">
+							<ui:include src="/auth/patient/viewLabProcedures.xhtml"></ui:include>
+						</div>
+					
+						<!-- DIAGNOSES -->
+						<div class="tab-panel" id="content-daignoses">
+							<ui:include src="/auth/patient/viewDiagnoses.xhtml"></ui:include>
+						</div>
+						
+						<!-- MEDICAL PROCEDURES -->
+						<div class="tab-panel" id="content-medical-procedures">
+							<ui:include src="/auth/patient/viewMedicalProcedures.xhtml"></ui:include>
+						</div>
+						
+						<!-- iMMUNIZATIONS -->
+						<div class="tab-panel" id="content-immunizations">
+							<ui:include src="/auth/patient/viewImmunizations.xhtml"></ui:include>
+						</div>
+						
+					</c:if>
+				</div>
+			</div>
+
+			<h:form>
+				<div class="form-group form-button-group">
+					<h:commandButton id="cancelButton" value="Cancel" action="#{navigation_controller.patientViewOfficeVisit()}" />
+				</div>
+			</h:form>
+		</ui:define>
+
+		<ui:define name="pageScripts">
+			<script src="/iTrust/js/officevisitinfo.js"></script>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

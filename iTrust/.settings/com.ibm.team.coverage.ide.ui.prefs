@@ -1,0 +1,10 @@
+#Sun Sep 07 21:12:08 EDT 2008
+com.ibm.team.coverage.ide.ui.method.block.threshold=0
+com.ibm.team.coverage.ide.ui.method.line.threshold=80
+com.ibm.team.coverage.ide.ui.package.block.threshold=0
+com.ibm.team.coverage.ide.ui.package.line.threshold=80
+com.ibm.team.coverage.ide.ui.type.block.threshold=0
+com.ibm.team.coverage.ide.ui.type.line.threshold=80
+com.ibm.team.coverage.ide.ui.unit.block.threshold=0
+com.ibm.team.coverage.ide.ui.unit.line.threshold=80
+eclipse.preferences.version=1

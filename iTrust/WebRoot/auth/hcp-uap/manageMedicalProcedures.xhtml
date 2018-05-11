@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<div class="duo-column-row">
+<!-- The Add Functionality -->
+<div class="duo-column duo-column-form well" style="border: thin solid grey; border-radius: 25px;">
+	<h:form>
+		<div class="form-group" >
+			<h:outputLabel >Medical Procedure:</h:outputLabel>
+			<h:selectOneMenu value="#{medical_procedure_form.medicalProcedure.cptCode.code}" class="selectpicker" style="width:100%" a:data-live-search="true">
+				<f:selectItems value="#{medical_procedure_form.getCPTCodes()}" var="cptCode" itemLabel="#{cptCode.toString()}" itemValue="#{cptCode.getCode()}" />
+			</h:selectOneMenu>
+		</div>	
+		<!-- Add button -->
+		<div class="form-action-group">
+			<h:commandButton class="btn btn-default" value="Add Medical Procedure"    action="#{medical_procedure_form.add()}" />
+		</div>	
+	</h:form>
+</div>
+
+<!-- View The current list of immunizations a patient has for this office visit -->
+<div class="duo-column duo-column-table">
+	<h:form>
+		<c:set var="medProcList" value="#{medical_procedure_form.getMedicalProceduresByOfficeVisit(office_visit_form.visitID)}" />
+		<c:choose>
+			<c:when test="${!empty medProcList}">
+				<h:dataTable styleClass="fTable" value="#{ medProcList }" var="medProc" border="1"> 
+					<h:column>
+						<f:facet name="header">Medical Procedure Code</f:facet>
+						<h:outputText value="#{medProc.getCode()}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">Medical Procedure Name</f:facet>
+						<h:outputText value="#{medical_procedure_form.getCodeName(medProc.getCode())}" />
+					</h:column>	
+					<h:column>
+						<f:facet name="header">Actions</f:facet>
+						<h:commandButton value="Remove" action="#{medical_procedure_form.remove(medProc.id)}"
+										 onclick="return confirm('Are you sure that you want to remove this medical procedure?')" />
+					</h:column>
+				</h:dataTable>
+			</c:when>
+			<c:otherwise>
+				<h2>No Medical Procedures</h2>
+			</c:otherwise>
+		</c:choose>
+	</h:form>
+</div>
+</div>
+</html>

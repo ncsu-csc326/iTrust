@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<!-- View The current list of immunizations a patient has for this office visit -->
+<div align="center">
+<h:form>
+	<c:set var="medProcList" value="#{medical_procedure_form.getMedicalProceduresByOfficeVisit(office_visit_form.visitID)}" />
+	<c:choose>
+		<c:when test="${!empty medProcList}">
+			<h:dataTable styleClass="fTable" value="#{ medProcList }" var="medProc" border="1"> 
+				<h:column>
+					<f:facet name="header">Medical Procedure Code</f:facet>
+					<h:outputText value="#{medProc.getCode()}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Medical Procedure Name</f:facet>
+					<h:outputText value="#{medical_procedure_form.getCodeName(medProc.getCode())}" />
+				</h:column>	
+			</h:dataTable>
+		</c:when>
+		<c:otherwise>
+			<h2>No Medical Procedures</h2>
+		</c:otherwise>
+	</c:choose>
+</h:form>
+</div>
+</html>

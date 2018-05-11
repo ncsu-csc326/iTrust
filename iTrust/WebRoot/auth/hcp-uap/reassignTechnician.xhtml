@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageStyle">
+			<link rel="stylesheet" href="/iTrust/css/form-layout.css" />
+		</ui:define>
+		<ui:define name="pageTitle">Reassign Technician</ui:define>
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml" />
+		</ui:define>
+
+		<ui:define name="mainContent">
+			<h:message for="" class="iTrustError"></h:message>
+			<h3>Reassign Technician</h3>
+
+			<h5>Current Lab Procedure Info:</h5>
+			<ui:include src="viewSimpleLabProcedure.xhtml" />
+
+			<h5>Reassign To:</h5>
+			<h:form id="reassignLabProceduresForm">
+				<div class="form-group form-group-full">
+					<h:selectOneMenu id="ovLoc"
+						value="#{lab_procedure_form.labProcedure.labTechnicianID}"
+						class="selectpicker" style="width:100%">
+						<f:selectItems
+							value="#{lab_technician_controller.getLabTechnicianStatusMID()}"
+							var="ltpair" itemLabel="#{ltpair.getKey()}"
+							itemValue="#{ltpair.getValue()}" />
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group form-button-group">
+					<h:commandButton id="submitReassignBtn" value="Reassign"
+						style="margin-right: 1.5rem;"
+						action="#{lab_procedure_form.submitReassignment}">
+					</h:commandButton>
+					<h:commandButton id="cancelVisitButton" value="Go Back"
+						action="#{navigation_controller.officeVisitInfo(lab_procedure_form.labProcedure.officeVisitID)}"
+						immediate="true">
+					</h:commandButton>
+				</div>
+			</h:form>
+
+		</ui:define>
+
+		<ui:define name="pageScripts"></ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

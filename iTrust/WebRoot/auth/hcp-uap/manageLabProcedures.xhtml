@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:outputLink value="newLabProcedure.xhtml"
+	class="btn btn-xs btn-primary">
+	<h:outputText value="Create Lab Procedure" />
+</h:outputLink>
+<br />
+<br />
+<c:choose>
+	<c:when
+		test="#{lab_procedure_controller.getLabProceduresByOfficeVisit(office_visit_form.visitID).size() > 0}">
+		<h:dataTable id="previousVisits12a" styleClass="fTable"
+			value="#{lab_procedure_controller.getLabProceduresByOfficeVisit(office_visit_form.visitID)}"
+			var="proc" border="1" width="100%">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Patient Name" />
+				</f:facet>
+				<h:outputText
+					value="#{user.getUserNameForID(office_visit_form.patientMID)}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="LOINC" />
+				</f:facet>
+				<h:outputText value="#{proc.labProcedureCode}"/>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Component" />
+				</f:facet>
+				<h:outputText value="#{loinccode_controller.getCodeByID(proc.labProcedureCode).component}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:outputText value="#{proc.status.getName()}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Priority" />
+				</f:facet>
+				<h:outputText value="#{proc.priority}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Office Visit Date" />
+				</f:facet>
+				<h:outputText value="#{office_visit_form.date}">
+					<f:converter converterId="localDateTimeConverter" />
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Lab Technician Name" />
+				</f:facet>
+				<h:outputText value="#{user.getUserNameForID(proc.labTechnicianID)}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Results</f:facet>
+				<h:outputText value="#{proc.results}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">Confidence Interval</f:facet>
+				<c:set var="lower" value="#{proc.confidenceIntervalLower}" />
+				<c:set var="higher" value="#{proc.confidenceIntervalUpper}" />
+				<h:outputText value="#{lower} - #{higher}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Commentary" />
+				</f:facet>
+				<h:outputText value="#{proc.commentary}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Actions" />
+				</f:facet>
+				<h:outputLink
+					value="reassignTechnician.xhtml?id=${proc.labProcedureID}"
+					rendered="#{lab_procedure_form.isReassignable(proc.labProcedureID.toString())}">
+					<h:outputText value="Reassign" />
+				</h:outputLink>
+				<h:form>
+					<h:commandLink
+						onclick="return confirm('Are you sure that you want to remove this lab procedure?')"
+						value="Remove"
+						rendered="#{lab_procedure_form.isRemovable(proc.labProcedureID.toString())}"
+						action="#{lab_procedure_form.removeLabProcedure(proc.labProcedureID)}" />
+				</h:form>
+				<h:form>
+					<h:inputHidden name="commentary" id="commentary" />
+					<h:commandLink
+						onclick="var comment = prompt('Enter commentary below'); if(comment != null) { arguments[0].target.parentNode.childNodes[1].value = comment; return true; } else { return false; }"
+						value="Comment"
+						rendered="#{lab_procedure_form.isCommentable(proc.labProcedureID.toString())}"
+						action="#{lab_procedure_form.addCommentary(proc.labProcedureID)}" />
+				</h:form>
+			</h:column>
+		</h:dataTable>
+	</c:when>
+	<c:otherwise>
+		<h5>No Lab Procedures On Record</h5>
+	</c:otherwise>
+</c:choose>
+
+</html>

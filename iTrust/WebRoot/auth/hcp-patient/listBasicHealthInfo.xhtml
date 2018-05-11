@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:itrust="/WEB-INF/tags.tld">
+<f:metadata>
+	<f:event type="preRenderView" listener="#{office_visit_controller.logViewHealthMetrics()}" />
+	<f:event type="preRenderView" listener="#{office_visit_controller.logViewBasicHealthInformation()}" />
+</f:metadata>
+<h:panelGroup rendered="#{not empty office_visit_controller.getAdultOfficeVisitsForCurrentPatient()}">
+<h:outputText styleClass="h4" value="Age 12+:"/>
+<br/>
+<h:dataTable id="previousVisits12a" styleClass="fTable"
+	value="#{office_visit_controller.getAdultOfficeVisitsForCurrentPatient()}"
+	var="ov" border="1">
+	<br />
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Office Visit Date" />
+		</f:facet>
+		<h:outputText value="#{ov.getDate()}">
+			<f:converter converterId="localDateTimeConverter" />
+		</h:outputText>
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Height" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getHeight() ? '-': ov.getHeight()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Weight" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getWeight() ? '-': ov.getWeight()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Blood Pressure" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getBloodPressure() ? '-': ov.getBloodPressure()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Household Smoking Status" />
+		</f:facet>
+		<h:outputText value="#{ov.getHouseholdSmokingStatusDescription()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Patient Smoking Status" />
+		</f:facet>
+		<h:outputText value="#{ov.getPatientSmokingStatusDescription()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="HDL" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getHDL() ? '-' : ov.getHDL()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="LDL" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getLDL() ? '-' : ov.getLDL()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Triglyceride" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getTriglyceride() ? '-' : ov.getTriglyceride()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="BMI" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getAdultBMI() ? '-': ov.getAdultBMI()}" />
+	</h:column>
+</h:dataTable>
+<br/>
+</h:panelGroup>
+
+<h:panelGroup rendered="#{not empty office_visit_controller.getChildOfficeVisitsForCurrentPatient()}">
+<h:outputText styleClass="h4" value="Age 3-12:"/>
+<br/>
+<h:dataTable id="previousVisits3to12" styleClass="fTable"
+	value="#{office_visit_controller.getChildOfficeVisitsForCurrentPatient()}"
+	var="ov" border="1">
+	<br />
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Office Visit Date" />
+		</f:facet>
+		<h:outputText value="#{ov.getDate()}">
+			<f:converter converterId="localDateTimeConverter" />
+		</h:outputText>
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Height" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getHeight() ? '-' : ov.getHeight()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Weight" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getWeight() ? '-' : ov.getWeight()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Blood Pressure" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getBloodPressure() ? '-': ov.getBloodPressure()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Household Smoking Status" />
+		</f:facet>
+		<h:outputText value="#{ov.getHouseholdSmokingStatusDescription()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="BMI" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getAdultBMI() ? '-': ov.getAdultBMI()}" />
+	</h:column>
+</h:dataTable>
+<br/>
+</h:panelGroup>
+
+
+<h:panelGroup rendered="#{not empty office_visit_controller.getBabyOfficeVisitsForCurrentPatient()}">
+<h:outputText styleClass="h4" value="Age 0-3:"/>
+<br/>
+<h:dataTable id="previousVisits0to3" styleClass="fTable"
+	value="#{office_visit_controller.getBabyOfficeVisitsForCurrentPatient()}"
+	var="ov" border="1">
+	<br />
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Office Visit Date" />
+		</f:facet>
+		<h:outputText value="#{ov.getDate()}">
+			<f:converter converterId="localDateTimeConverter" />
+		</h:outputText>
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Length" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getLength() ? '-': ov.getLength()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Weight" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getWeight() ? '-': ov.getWeight()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Head Circumference" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getHeadCircumference() ? '-': ov.getHeadCircumference()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="Household Smoking Status" />
+		</f:facet>
+		<h:outputText value="#{ov.getHouseholdSmokingStatusDescription()}" />
+	</h:column>
+	<h:column>
+		<f:facet name="header">
+			<h:outputText value="BMI" />
+		</f:facet>
+		<h:outputText value="#{empty ov.getBabyBMI() ? '-': ov.getBabyBMI()}" />
+	</h:column>
+</h:dataTable>
+</h:panelGroup>
+
+</html>

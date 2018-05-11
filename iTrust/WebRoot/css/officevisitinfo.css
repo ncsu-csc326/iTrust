@@ -1,0 +1,16 @@
+/*
+ * officevisitinfo.css 
+ * 
+ * Show/hide tabbed panels on officevisitinfo.xhtml when clicked
+ */
+
+#tab-general:checked ~ .tab-content > #content-general,
+#tab-health-metrics:checked ~ .tab-content > #content-health-metrics,
+#tab-prescriptions:checked ~ .tab-content > #content-prescriptions, 
+#tab-lab-procedure:checked ~ .tab-content > #content-lab-procedure, 
+#tab-daignoses:checked ~ .tab-content > #content-daignoses, 
+#tab-medical-procedures:checked ~ .tab-content > #content-medical-procedures, 
+#tab-immunizations:checked ~ .tab-content > #content-immunizations {
+	display: block;
+}
+
