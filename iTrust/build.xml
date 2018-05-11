@@ -1,0 +1,309 @@
+<project name="Web Application" default="build" basedir="." xmlns:jacoco="antlib:org.jacoco.ant">
+
+	<property name="app.name" value="iTrust" />
+	<property name="tomcat.home" value="/usr/local/apache-tomcat-8.0.30" />
+	<property name="findbugs.home" value="/usr/local/findbugs" />
+	<property name="manager.url" value="http://localhost:8080/manager/text" />
+	<property name="username" value="tomcatmanager" />
+	<property name="password" value="4d4t0mc4t" />
+	<property name="context.dir" value="http://www4.ncsu.edu/~jtking/iTrust/Jenkins/" />
+	<property name="result.classes.dir" location="${basedir}/war/WEB-INF/classes/" />
+	<property name="result.report.dir" location="${basedir}/jacoco/reports/jacoco" />
+	<property name="result.exec.file" location="${basedir}/jacoco/exec/jacoco.exec" />
+	<property name="jacoco.home" value="/usr/local/jacoco" />
+
+	<!-- JACOCO -->
+	
+    <path id="jacoco.lib">
+        <fileset dir="${jacoco.home}/lib/">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+
+	<path id="classpath">
+		<fileset dir="${tomcat.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${basedir}/WebRoot/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${basedir}/testing-libs">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement location="${basedir}/war/WEB-INF/classes" />
+		<pathelement location="${basedir}/war/WEB-INF/unittests" />
+	</path>
+	
+	<path id="catalina-ant-classpath">
+	    <fileset dir="${tomcat.home}/lib">
+	           <include name="catalina-ant.jar"/>
+	           <include name="tomcat-coyote.jar"/>
+	           <include name="tomcat-util.jar"/>
+	        </fileset>
+	    <fileset dir="${tomcat.home}/bin">
+	               <include name="tomcat-juli.jar"/>
+	    </fileset>
+	</path>
+	
+    <path id="findbugs.lib">
+        <fileset dir="${findbugs.home}/lib/">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+
+    <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+        <classpath refid="jacoco.lib"/>
+    </taskdef>
+	<taskdef name="catalina-deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="catalina-ant-classpath"/>
+	<taskdef name="catalina-list" classname="org.apache.catalina.ant.ListTask" classpathref="catalina-ant-classpath"/>
+	<taskdef name="catalina-reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="catalina-ant-classpath"/>
+	<taskdef name="catalina-findleaks" classname="org.apache.catalina.ant.FindLeaksTask" classpathref="catalina-ant-classpath"/>
+	<taskdef name="catalina-resources" classname="org.apache.catalina.ant.ResourcesTask" classpathref="catalina-ant-classpath"/>
+	<taskdef name="catalina-start" classname="org.apache.catalina.ant.StartTask" classpathref="catalina-ant-classpath"/>
+	<taskdef name="catalina-stop" classname="org.apache.catalina.ant.StopTask" classpathref="catalina-ant-classpath"/>
+	<taskdef name="catalina-undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="catalina-ant-classpath"/>
+	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.lib"/>
+
+	<target name="clean" description="Deletes the Web Application's war directory and web archive file">
+		<echo message="Deleting ${app.name}'s war directory and web archive file ..." />
+		<delete dir="${basedir}/war" quiet="true" />
+		<delete file="${basedir}/${app.name}.war" quiet="true" />
+	</target>
+
+	<target name="prepare" description="Creates the Web Application's war directory" depends="clean">
+		<echo message="Creating ${app.name}'s war directory ..." />
+		<mkdir dir="${basedir}/war" />
+		<mkdir dir="${basedir}/war/WEB-INF" />
+		<mkdir dir="${basedir}/war/WEB-INF/classes" />
+		<mkdir dir="${basedir}/war/WEB-INF/unittests" />
+		<mkdir dir="${basedir}/war/WEB-INF/seleniumtests" />
+		<mkdir dir="${basedir}/war/WEB-INF/lib" />
+		<mkdir dir="${basedir}/war/WEB-INF/test-reports/" />
+	</target>
+
+	<target name="builder" description="Builds the Web Application" depends="prepare">
+		<echo message="Building ${app.name} ..." />
+		<javac debug="true" debuglevel="lines,vars,source" encoding="8859_1" srcdir="${basedir}/" destdir="${basedir}/war/WEB-INF/classes">
+			<include name="src/**/*.java" />
+			<include name="src/**/*.jpg" />
+			<include name="unittests/**/EvilDAOFactory.java" />
+			<include name="unittests/**/TestDAOFactory.java" />
+			<include name="unittests/**/DBBuilder.java" />
+			<include name="unittests/**/TestDataGenerator.java" />
+			<include name="unittests/**/SQLFileCache.java" />
+			<include name="unittests/**/*.sql" />
+			<classpath refid="classpath" />
+		</javac>
+		<javac debug="true" debuglevel="lines,vars,source" encoding="8859_1" srcdir="${basedir}/" destdir="${basedir}/war/WEB-INF/unittests">
+			<include name="unittests/**/*.java" />
+			<include name="seleniumtests/**/iTrustSeleniumTest.java" />
+			<classpath refid="classpath" />
+		</javac>
+		<javac debug="true" debuglevel="lines,vars,source" encoding="8859_1" srcdir="${basedir}/" destdir="${basedir}/war/WEB-INF/seleniumtests">
+			<include name="seleniumtests/**/*.java" />
+			<classpath refid="classpath" />
+		</javac>
+		<copy todir="${basedir}/war/WEB-INF/classes">
+			<fileset dir="${basedir}/src">
+				<include name="**/*.properties" />
+			</fileset>
+		</copy>
+		<copy todir="${basedir}/war/">
+			<fileset dir="${basedir}/WebRoot">
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+		<copy todir="${basedir}/war/WEB-INF">
+			<fileset dir="${basedir}/WebRoot/WEB-INF">
+				<include name="**/*.tld" />
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+		<copy todir="${basedir}/war/WEB-INF/lib">
+			<fileset dir="${basedir}/WebRoot/WEB-INF/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${tomcat.home}/lib">
+				<include name="**/mysql-driver.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${basedir}/war">
+			<fileset dir="${basedir}/WebRoot">
+				<include name="**/*" />
+				<exclude name="**/context.xml" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="package" description="Packages the Web Application's web archive file" depends="builder">
+		<echo message="Packaging ${app.name}'s web archive file ..." />
+		<delete file="${basedir}/${app.name}.war" />
+		<jar jarfile="${basedir}/${app.name}.war">
+			<fileset dir="${basedir}/war" includes="**" />
+		</jar>
+	</target>
+
+	<target name="install" description="Installs the Web Application" depends="package">
+		<echo message="Installing ${app.name} ..." />
+		<install url="${manager.url}" username="${username}" password="${password}" path="/${app.name}" war="file:${basedir}/${app.name}.war" />
+	</target>
+
+	<target name="buildDatabase" description="Builds the database">
+		<echo message="Building database for ${app.name} ..." />
+		<java classname="edu.ncsu.csc.itrust.DBBuilder" fork="true">
+			<classpath refid="classpath" />
+		</java>
+	</target>
+
+	<target name="testDataGenerator" description="Generates test data in the database">
+		<echo message="Generating test data for ${app.name} ..." />
+		<java classname="edu.ncsu.csc.itrust.datagenerators.TestDataGenerator" fork="true">
+			<classpath refid="classpath" />
+		</java>
+	</target>
+	
+		
+	<target name="runUnitTestsJacoco" description="Runs the unit tests for the project with Jacoco">
+		<jacoco:coverage destfile="${result.exec.file}">
+			<junit fork="on" forkmode="once" haltonfailure="no" haltonerror="no" printsummary="on">
+				<formatter type="xml" />
+				<classpath>
+					<path refid="jacoco.lib" />
+					<fileset dir="${tomcat.home}/lib">
+						<include name="*.jar" />
+					</fileset>
+					<fileset dir="${basedir}/WebRoot/WEB-INF/lib">
+						<include name="*.jar" />
+					</fileset>
+					<fileset dir="${basedir}/testing-libs">
+						<include name="*.jar" />
+					</fileset>
+					<pathelement location="${basedir}/war/WEB-INF/classes" />
+					<pathelement location="${basedir}/war/WEB-INF/unittests" />
+				</classpath>
+				<batchtest todir="${basedir}/war/WEB-INF/test-reports/">
+					<formatter type="brief" usefile="false" />
+					<fileset dir="${basedir}/war/WEB-INF/unittests">
+						<include name="**/*Test.class" />
+						<exclude name="**/ProfilePhoto*Test.class" />
+						<exclude name="**/iTrustSeleniumTest.class" />
+					</fileset>
+				</batchtest>
+				<jvmarg value="-XX:-UseSplitVerifier" />
+			</junit>
+		</jacoco:coverage>
+		<junitreport todir="${basedir}/war/WEB-INF/test-reports/">
+			<fileset dir="${basedir}/war/WEB-INF/test-reports/">
+				<include name="TEST-*.xml" />
+			</fileset>
+		</junitreport>
+	</target>
+
+	<target name="runSeleniumTests" description="Runs the Selenium tests for the project">
+		<echo message="Running Selenium tests for ${app.name} ..." />
+		<junit fork="on" forkmode="perBatch" haltonfailure="no" haltonerror="no" printsummary="on" maxmemory="1024m">
+			<jvmarg value="-XX:MaxPermSize=512m" />
+			<jvmarg value="-Xmx1024m" />
+			<classpath>
+				<fileset dir="${tomcat.home}/lib">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${basedir}/WebRoot/WEB-INF/lib">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${basedir}/testing-libs">
+					<include name="*.jar" />
+				</fileset>
+				<pathelement location="${basedir}/war/WEB-INF/seleniumtests" />
+				<pathelement location="${basedir}/war/WEB-INF/classes/" />
+			</classpath>
+			<batchtest todir="${basedir}/war/WEB-INF/test-reports/">
+				<formatter type="xml" />
+				<fileset dir="${basedir}/war/WEB-INF/seleniumtests/">
+					<include name="**/*Test.class" />
+					<exclude name="**/iTrustSeleniumTest.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<junitreport todir="${basedir}/war/WEB-INF/test-reports">
+			<fileset dir="${basedir}/war/WEB-INF/test-reports">
+				<include name="TEST-*.xml" />
+			</fileset>
+		</junitreport>
+	</target>
+
+	<target name="cleanupSourceFiles" description="Cleans up the source folder with classes not needed for coverage">
+		<echo message="Cleaning up source files to remove **/unittests/*.class ..." />
+		<delete dir="${basedir}/war/WEB-INF/classes/edu/ncsu/csc/itrust/datagenerators" quiet="true" />
+		<delete dir="${basedir}/war/WEB-INF/classes/edu/ncsu/csc/itrust/testutils" quiet="true" />
+		<delete file="${basedir}/war/WEB-INF/classes/edu/ncsu/csc/itrust/DBBuilder.class" quiet="true" />
+	</target>
+
+	<target name="reload" description="Reloads the Web Application" depends="package">
+		<echo message="Reloading ${app.name} ..." />
+		<reload url="${manager.url}" username="${username}" password="${password}" path="/${app.name}" />
+	</target>
+
+	<target name="remove" description="Removes the Web Application">
+		<echo message="Removing ${app.name} ..." />
+		<remove url="${manager.url}" username="${username}" password="${password}" path="/${app.name}" />
+	</target>
+
+	<target name="deploy" description="Deploys the Web Application" depends="package">
+		<echo message="Deploying ${app.name} ..." />
+		<deploy url="${manager.url}" username="${username}" password="${password}" path="/${app.name}" update="true" war="file:${basedir}/${app.name}.war" />
+	</target>
+
+	<target name="undeploy" description="Undeploys the Web Application">
+		<echo message="Undeploying ${app.name} ..." />
+		<undeploy url="${manager.url}" failOnError="false" username="${username}" password="${password}" path="/${app.name}" />
+	</target>
+
+	<target name="start" description="Start the Web Application">
+		<echo message="Start the Web Application ..." />
+		<start url="${manager.url}" username="${username}" password="${password}" path="/${app.name}" />
+	</target>
+
+	<target name="stop" description="Stop the Web Application">
+		<echo message="Stop the Web Application ..." />
+		<stop url="${manager.url}" username="${username}" password="${password}" path="/${app.name}" />
+	</target>
+
+	<target name="list" description="Lists Installed and Deployed Web Applications">
+		<echo message="Listing Installed and Deployed Web Applications ..." />
+		<list url="${manager.url}" username="${username}" password="${password}" />
+	</target>
+
+	<target name="resources" description="Lists Tomcat Global Resources of All Types">
+		<echo message="Listing Tomcat Global Resources of All Types ..." />
+		<resources url="${manager.url}" username="${username}" password="${password}" />
+	</target>
+
+	<target name="roles" description="Lists Tomcat Security Roles">
+		<echo message="Listing Tomcat Security Roles ..." />
+		<roles url="${manager.url}" username="${username}" password="${password}" />
+	</target>
+
+	<target name="debug">
+		<echo message="Lists the properties for debugging purposes ..." />
+		<echo message="app.name    = ${app.name}" />
+		<echo message="basedir     = ${basedir}" />
+		<echo message="user.home   = ${user.home}" />
+		<echo message="tomcat.home = ${tomcat.home}" />
+		<echo message="manager.url = ${manager.url}" />
+		<echo message="username    = ${username}" />
+		<!-- <echo message="password    = ${password}"/> commented out for security reasons -->
+	</target>
+
+	<target name="findbugs">
+		<findbugs home="${findbugs.home}" output="xml" outputFile="findbugs.xml">
+			<sourcePath path="${basedir}/src/" />
+			<class location="${basedir}/war/WEB-INF/classes/edu/ncsu/csc/itrust/" />
+		</findbugs>
+	</target>
+
+
+	<target name="build" description="Runs all necessary targets needed to build and test iTrust" depends="deploy,buildDatabase,findbugs,testDataGenerator,runUnitTestsJacoco,testDataGenerator,runSeleniumTests,cleanupSourceFiles,undeploy" />
+</project>
