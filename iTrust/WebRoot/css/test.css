@@ -1,0 +1,94 @@
+.menu_category, .menuItem, .menuContainer,.menuTitle
+{
+  position:relative;
+  width:200px;
+}
+
+.menuContainer
+{
+  width: 90%;
+  /*border-top: solid 2px #C1C1C1;*/
+  border-bottom: solid 2px #BD0000;
+  /*border-left: solid 2px #C1C1C1;*/
+  border-right: solid 2px #BD0000;
+  /*top border*/  
+}
+
+.menuTitle
+{
+  cursor:pointer;
+  vertical-align:left;
+  font-size:14pt;
+  /*font-weight:bold;*/
+  background-repeat:repeat-x;
+  display:table-cell;
+  background-image:url('title_repeater.jpg');
+  -moz-user-select:none;
+  padding: 10px 0 10px 4px;
+  float: left;
+  background-color: #3E3E3E;
+  color: #FFFFFF;
+  
+  border-bottom: 2px solid #BD0000;
+  border-right: 2px solid #BD0000;
+  width: 97%;
+  display: inline-table;
+  
+  font-family: "Helvetica Neue", "Helvetica", Arial, Geneva, sans-serif;
+ 
+  display: block;
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+.menuItem
+{
+  height:0px;
+  /*overflow:auto;*/
+  overflow:hidden;
+  display:none; 
+  font-weight:bold;
+  width: 100%;
+}
+
+.menuSub:hover
+{
+	background-color: #E5E5E5;
+}
+
+#menuPadding
+{
+	padding-left: 10px; 
+	padding-top: 13px;
+}
+
+.menuContainer .menuItem .menuSub .highlighted{
+	border: 0;
+	width: 14px;
+	visibility: hidden;
+	padding: 0 0 0 4px;
+	float: left;
+}
+
+.menuContainer .menuItem .menuSub:hover .highlighted{
+	visibility: visible;
+}
+			
+.menuItem .menuSub a {
+	font-size: 12px;
+	margin-left: 0px;
+	/*border-bottom: 1px solid #BD0000;
+	border-bottom-width: 2px;*/
+}
+
+.menuItem .menuSub td {
+	/*border-bottom: 1px solid #BD0000;
+	border-bottom-width: 2px;*/
+}
+
+
+.menuItem .menuSub span {
+	font-size: 12px;
+	font-weight: bold;
+	padding: 0 0 0 0;
+}

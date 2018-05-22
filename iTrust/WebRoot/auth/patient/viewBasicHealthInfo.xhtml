@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:itrust="/WEB-INF/tags.tld">
+<h:body>
+	<ui:composition template="/iTrust_template.xhtml">
+		<ui:define name="pageTitle">iTrust - View My Records</ui:define>
+		<ui:define name="leftMenu">
+			<ui:include src="/auth/patient/menu.jsp" />
+		</ui:define>
+		<ui:define name="mainContent">
+			<itrust:patientNav thisTitle="Office Visit" />
+			<div align="center">
+				<br />
+				<h:message for="" />
+			</div>
+			<c:choose>
+				<c:when test="#{office_visit_controller.CurrentPatientHasVisited()}">
+					<h3>My Basic Health Information</h3>
+					<br/>
+					<ui:include src="/auth/hcp-patient/listBasicHealthInfo.xhtml"/>
+				</c:when>
+				<c:otherwise>
+					<br />
+					<br />
+					<div align="center">
+						<h2 style="font-size: 175%; font-weight: bold;">No health records available.</h2>
+					</div>
+					<br />
+					<br />
+				</c:otherwise>
+			</c:choose>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

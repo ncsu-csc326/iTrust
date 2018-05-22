@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:body>
+<ui:composition template="/iTrust_template.xhtml">
+	<ui:define name="pageStyle"></ui:define>
+	<ui:define name="pageTitle">Manage CPT Code List</ui:define>
+	<ui:define name="leftMenu">
+		<ui:include src="/auth/admin/menu.jsp" />
+	</ui:define>
+
+	<ui:define name="mainContent">
+		
+		<div align="center">
+        		<h:message for="" class="iTrustError" />
+			<br />
+			<h2 style="font-size: 175%; font-weight: bold;">CPT Codes</h2>
+			<br />
+			
+			<h:form id="cptCodeForm">
+				<!-- Input fields for codes -->
+				<div class="table-responsive">
+				<h:panelGrid id="panel" class="fTable" columns="2" border="1" cellpadding="10" cellspacing="1"> 
+					<f:facet name="header">
+					         <h:outputText value="Add or Update Codes"/>
+		     		</f:facet>
+					<h:outputLabel value="Code" />
+		      		<h:inputText value="#{cpt_code_form.code}"/>
+				    <h:outputLabel value="Description" />
+				    <h:inputText value="#{cpt_code_form.description}"/>
+				</h:panelGrid>
+				</div><br />
+				
+				<!-- Add/Update/Delete buttons -->
+				<h:commandButton class="btn btn-default" value="Add Code" action="#{cpt_code_form.add()}"/>&nbsp;
+				<h:commandButton class="btn btn-default" value="Update Code" action="#{cpt_code_form.update()}" />&nbsp;
+		
+				<!-- Trigger the modal with a button -->
+				<button type="button" id="deleteButton" class="btn btn-default" data-toggle="modal" data-target="#deleteModal">Delete Code</button>
+				<!-- Modal -->
+				<div id="deleteModal" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Delete Confirmation</h4>
+								</div>
+								<div class="modal-body">
+									<p>Are you sure you want to delete: <br /> <br /> CPT Code #{cpt_code_form.code} <br /></p>
+									
+								</div>
+								<div class="modal-footer">
+									<h:commandButton class="btn btn-default" action="#{cpt_code_form.delete()}" value="Confirm Delete Code" />
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+				</div>				
+				
+				<br /><br /><br />
+			</h:form>
+			<br /><br />
+		</div>
+
+		<div align="center">
+			<!--  Search/Filter Box For Reducing Amount Of Codes Retrieved -->
+			<h3>Search For A Code By Entering At Least 1 Digit Of The Code</h3>
+			<h:form id="searchForm">
+				<h:inputText id="searchBox" value="#{cpt_code_form.search}"/>&nbsp;
+				<h:commandButton id="searchButton" class="btn btn-default" value="Search For Code" action="#{cpt_code_form.setDisplayCodes(true)}">
+					<f:ajax execute="@form" render="codeDisplay"
+							onevent="$(function(){ $('.dt-compat').DataTable();});"/>
+				</h:commandButton>
+			</h:form>
+			<br /><br /><br />
+			
+			<!--  Displays codes  -->
+			<h:form id="codeDisplay" rendered="#{cpt_code_form.displayCodes}">
+				<c:set var="codeList" value="#{ cpt_code_form.getCodesWithFilter() }" />
+				<c:choose>
+					<c:when test="${!empty codeList}">
+						<h:dataTable id="codes" styleClass="fTable dt-compat-codes" value="#{ cpt_code_form.getCodesWithFilter() }" var="code" border="1" width="100%">
+							<f:facet name="header">
+								<h:outputText value="Current Codes" />
+							</f:facet>
+
+							<h:column>
+								<f:facet name="header">Code</f:facet>
+								<h:commandLink value="#{code.code}" action="#{ cpt_code_form.fillInput( code.code, code.name) }" >
+									<f:ajax execute="@form" render="cptCodeForm" />
+								</h:commandLink>
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">Description</f:facet>
+								<h:outputText value="#{code.name}" />
+							</h:column>
+						</h:dataTable>
+					</c:when>
+					<c:otherwise>
+						No Codes
+					</c:otherwise>
+				</c:choose>
+			</h:form>
+			<br />
+		</div>
+
+	</ui:define>
+
+	<ui:define name="pageScripts">
+		<script>
+			$(function(){
+				checkSearchLength();
+			});
+				
+			// Enables searchButton if at appropriate length
+			function checkSearchLength() {
+				if( $("[id='searchForm:searchBox']").val().length >= 1 ){
+					$("[id='searchForm:searchButton']").attr("disabled", false);
+				} else {
+					$("[id='searchForm:searchButton']").attr("disabled", true);
+				}
+			};
+			
+			// Checks length of search box on keyup 
+			$("[id='searchForm:searchBox']").keyup(function() {
+				checkSearchLength();
+			});
+		</script>
+	</ui:define>
+</ui:composition>
+</h:body>
+
+</html>

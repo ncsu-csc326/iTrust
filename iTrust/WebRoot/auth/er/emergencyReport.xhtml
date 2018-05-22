@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<link href="/iTrust/css/emergencyReport.css" rel="stylesheet" />
+
+<div id="emergency-report-content">
+	<div align="center">
+		<br />
+		<h2 style="font-size: 175%; font-weight: bold;">Emergency Record</h2>
+		<h6>
+			<a href="#" onclick="window.print()">Print This Page</a>
+		</h6>
+		<br />
+	</div>
+
+	<div align="center">
+
+		<c:set var="record"
+			value="#{ emergency_record_controller.loadRecord(sessionScope['pid']) }" />
+
+		<c:choose>
+			<c:when test="${!empty record}">
+
+				<h:panelGrid columns="2" id="basicInfo" styleClass="fTable"
+					border="1">
+					<f:facet name="header">
+						<h:outputText value="General" />
+					</f:facet>
+
+					<h:outputLabel value="Name" />
+					<h:outputText value="#{record.getName()}" />
+
+					<h:outputLabel value="Age" />
+					<h:outputText value="#{record.getAge()}" />
+
+					<h:outputLabel value="Gender" />
+					<h:outputText value="#{record.getGender()}" />
+
+					<h:outputLabel value="Blood Type" />
+					<h:outputText value="#{record.getBloodType()}" />
+				</h:panelGrid>
+				<br />
+
+				<h:panelGrid columns="2" id="emergencyContact" styleClass="fTable"
+					border="1">
+					<f:facet name="header">
+						<h:outputText value="Emergency Contact" />
+					</f:facet>
+
+					<h:outputLabel value="Name" />
+					<h:outputText value="#{record.getContactName()}" />
+
+					<h:outputLabel value="Phone" />
+					<h:outputText value="#{record.getContactPhone()}" />
+				</h:panelGrid>
+				<br />
+
+				<c:choose>
+					<c:when test="#{record.getAllergies().size() != 0}">
+						<h:dataTable id="allergies" styleClass="fTable"
+							value="#{record.getAllergies()}" var="allergy" border="1">
+							<f:facet name="header">
+								<h:outputText value="Allergies" />
+							</f:facet>
+
+							<h:column>
+								<h:outputText value="#{allergy.getDescription()}" />
+							</h:column>
+						</h:dataTable>
+					</c:when>
+					<c:otherwise>
+						<h4>No allergies on record</h4>
+					</c:otherwise>
+				</c:choose>
+				<br />
+
+				<c:choose>
+					<c:when test="#{record.getDiagnoses().size() != 0}">
+						<h:dataTable id="diagnosisCodes" styleClass="fTable"
+							value="#{record.getDiagnoses()}" var="diagnosis" border="1">
+							<f:facet name="header">
+								<h:outputText value="Diagnosis Codes" />
+							</f:facet>
+
+							<h:column>
+								<f:facet name="header">Code</f:facet>
+								<h:outputText value="#{diagnosis.getCode()}" />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">Name</f:facet>
+								<h:outputText value="#{diagnosis.getName()}" />
+							</h:column>
+						</h:dataTable>
+					</c:when>
+					<c:otherwise>
+						<h4>No diagnoses on record</h4>
+					</c:otherwise>
+				</c:choose>
+				<br />
+
+				<c:choose>
+					<c:when test="#{record.getPrescriptions().size() != 0}">
+						<h:dataTable id="prescriptions" styleClass="fTable"
+							value="#{record.getPrescriptions()}" var="prescription"
+							border="1">
+							<f:facet name="header">
+								<h:outputText value="Prescriptions" />
+							</f:facet>
+
+							<h:column>
+								<f:facet name="header">National Drug Code</f:facet>
+								<h:outputText value="#{prescription.getCode()}" />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">Name</f:facet>
+								<h:outputText value="#{prescription.getName()}" />
+							</h:column>
+						</h:dataTable>
+					</c:when>
+					<c:otherwise>
+						<h4>No prescriptions on record</h4>
+					</c:otherwise>
+				</c:choose>
+				<br />
+
+				<c:choose>
+					<c:when test="#{record.getImmunizations().size() != 0}">
+						<h:dataTable id="immunizations" styleClass="fTable"
+							value="#{record.getImmunizations()}" var="immunization"
+							border="1">
+							<f:facet name="header">
+								<h:outputText value="Immunizations" />
+							</f:facet>
+
+							<h:column>
+								<f:facet name="header">CPT Code</f:facet>
+								<h:outputText value="#{immunization.getCode()}" />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">Name</f:facet>
+								<h:outputText value="#{immunization.getName()}" />
+							</h:column>
+						</h:dataTable>
+					</c:when>
+					<c:otherwise>
+						<h4>No immunizations on record</h4>
+					</c:otherwise>
+				</c:choose>
+
+			</c:when>
+			<c:otherwise>
+				No Emergency Record For This Patient
+			</c:otherwise>
+		</c:choose>
+	</div>
+</div>
+</html>

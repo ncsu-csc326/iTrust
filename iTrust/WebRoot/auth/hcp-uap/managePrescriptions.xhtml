@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<div class="duo-column-row">
+<!-- The Add, Edit, and Delete Functionality -->
+<div class="duo-column duo-column-form well" style="border: thin solid grey; border-radius: 25px;">
+	<h:form>
+		<div class="form-group" >
+			<h:outputLabel>Medication:</h:outputLabel>
+			<h:selectOneMenu value="#{ prescription_form.prescription.drugCode.NDCode }" class="selectpicker" style="width:100%" a:data-live-search="true">
+				<f:selectItems value="#{prescription_form.getNDCCodes()}" var="ndcCode" itemLabel="#{ndcCode.toString()}" itemValue="#{ndcCode.getCode()}" />
+			</h:selectOneMenu>
+		</div>	
+		<div class="form-group">
+			<h:outputLabel for="dosage">Dosage in mg:</h:outputLabel>
+			<h:inputText id="dosage" class="form-control" value="#{prescription_form.prescription.dosage}"/>
+		</div>
+		<div class="form-group">
+			<h:outputLabel for="startDate">Start Date:</h:outputLabel>
+			<h:inputText id="startDate" class="form-control" value="#{prescription_form.prescription.startDate}">
+				<f:converter converterId="localDateConverter" />
+			</h:inputText>
+			<h:message for="startDate" class="iTrustError" />
+		</div>
+		<div class="form-group">
+			<h:outputLabel for="endDate">End Date:</h:outputLabel>
+			<h:inputText id="endDate" class="form-control" value="#{prescription_form.prescription.endDate}">
+				<f:converter converterId="localDateConverter" />
+			</h:inputText>
+			<h:message for="endDate" class="iTrustError" />
+		</div>
+		<div class="form-group">
+			<h:outputLabel for="instructions">Special Instructions:</h:outputLabel>
+			<h:inputTextarea id="instructions" class="form-control" value="#{prescription_form.prescription.instructions}"/>
+		</div>
+		<!-- Add/Update buttons -->
+		<div class="form-action-group">
+			<h:commandButton class="btn btn-default" value="Add Prescription"    action="#{prescription_form.add()}" />
+			<h:commandButton class="btn btn-default" value="Update Prescription" action="#{prescription_form.edit()}" />
+		</div>	
+	</h:form>
+</div>
+
+<!-- View The current list of prescriptions a patient has for this office visit -->
+<div class="duo-column duo-column-table">
+	<h:form>
+		<c:set var="prescriptionList" value="#{prescription_form.getPrescriptionsByOfficeVisit(office_visit_form.visitID)}" />
+		<c:choose>
+			<c:when test="${!empty prescriptionList}">
+				<h:dataTable styleClass="fTable" value="#{ prescriptionList }" var="prescription" border="1">
+        					 
+					<h:column>
+						<f:facet name="header">Medication Code</f:facet>
+						<h:commandLink value="#{prescription.getCode()}" 
+								action="#{ prescription_form.fillInput( prescription.id, prescription.drugCode, 
+								prescription.dosage, prescription.startDate, prescription.endDate, prescription.instructions ) }" >
+						</h:commandLink>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Medication Name</f:facet>
+						<h:outputText value="#{prescription_form.getCodeName(prescription.getCode())}" />
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Dosage (mg)</f:facet>
+						<h:outputText value="#{prescription.dosage}" />
+					</h:column>
+		
+					<h:column>
+						<f:facet name="header">Start Date</f:facet>
+						<h:outputText value="#{prescription.startDate}">
+							<f:converter converterId="localDateConverter"/>
+						</h:outputText>
+					</h:column>
+		
+					<h:column>
+						<f:facet name="header">End Date</f:facet>
+						<h:outputText value="#{prescription.endDate}">
+							<f:converter converterId="localDateConverter"/>
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Instructions</f:facet>
+						<h:outputText value="#{prescription.instructions}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">HCP Name</f:facet>
+						<h:outputText value="#{user.getUserNameForID(prescription.hcpMID)}" />
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Actions</f:facet>
+						<h:commandButton value="Edit" class="btn btn-default"
+								action="#{ prescription_form.fillInput( prescription.id, prescription.drugCode, 
+								prescription.dosage, prescription.startDate, prescription.endDate, prescription.instructions ) }" >&nbsp;
+						</h:commandButton>
+						<h:commandButton value="Remove" action="#{prescription_form.remove(prescription.id)}"
+										 onclick="return confirm('Are you sure that you want to remove this prescription?')" />
+					</h:column>
+				</h:dataTable>
+			</c:when>
+			<c:otherwise>
+				<h2>No Prescriptions</h2> 
+			</c:otherwise>
+		</c:choose>
+	</h:form>
+</div>
+</div>
+</html>

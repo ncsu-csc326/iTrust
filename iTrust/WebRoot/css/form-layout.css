@@ -1,0 +1,86 @@
+/*
+ * form-layout.css 
+ * 
+ * Establishes inline-form style for form inputs and labels, e.g. officevisitinfo.xhtml
+ */
+ 
+.form-group {
+	margin-bottom: 2rem;
+}
+
+.form-group label {
+	width: 22.5rem;
+	vertical-align: top;
+	text-align: right;
+	padding-right: 5rem;
+	margin: 0;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+.form-group .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+	width: calc(100% - 22.5rem);
+}
+
+.form-group.form-group-full input,
+.form-group.form-group-full select,
+.form-group.form-group-full textarea,
+.form-group.form-group-full .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+	width: 100%;
+}
+
+.form-group textarea {
+	resize: vertical;
+}
+
+.form-group .iTrustError {
+	margin-left: 22.5rem;
+}
+
+.inline {
+	display: inline;
+}
+
+.form-button-group {
+	text-align: right;
+	margin-top: 3rem;
+}
+
+.form-button-group input {
+	width: 15rem;
+	margin-left: 2rem;
+	font-weight: bold;
+}
+
+.duo-column-row {
+	display: flex;
+}
+
+.duo-column .form-group .iTrustError {
+	margin-left: 0;
+}
+
+.duo-column-form {
+	margin-right: 3rem;
+	border-right: 1px solid #aaa;
+	padding-right: 3rem;
+	width: 30%;
+}
+
+.duo-column-form label {
+	width: auto;
+}
+
+.duo-column-form .form-action-group > input {
+	margin-bottom: 1rem;
+}
+
+.duo-column-form .form-action-group > input,
+.duo-column-form .form-action-group > button,
+.duo-column-form .form-group > input,
+.duo-column-form .form-group > select,
+.duo-column-form .form-group > textarea,
+.duo-column-form .form-group > .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+	width: 100%;
+}

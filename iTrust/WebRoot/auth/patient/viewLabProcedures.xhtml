@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<!--  List variables of lab procedures -->
+<c:set var="completedLPs"
+	value="#{lab_procedure_controller.getCompletedLabProceduresByOfficeVisit(office_visit_form.visitID)}" />
+<c:set var="otherLPs"
+	value="#{lab_procedure_controller.getNonCompletedLabProceduresByOfficeVisit(office_visit_form.visitID)}" />
+
+<div align="center">
+	<!--  Displays a table of completed lab procedures if the list isn't empty -->
+<c:choose>
+	<c:when test="${!empty completedLPs}">
+		<h:dataTable id="completedLP" styleClass="fTable"
+			value="#{completedLPs}" var="labProc" border="1">
+			<f:facet name="header">
+				<h:outputText value="Completed Lab Procedures" />
+			</f:facet>
+
+			<h:column>
+				<f:facet name="header">Status</f:facet>
+				<h:outputText value="#{labProc.getStatus()}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">HCP Name</f:facet>
+				<h:outputText value="#{user.getUserNameForID(labProc.hcpMID)}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">Office Visit Date</f:facet>
+				<c:set var="OvForThisLabProc"
+					value="#{labProc.getOfficeVisitID()}" />
+				<h:outputText id="ovdate"
+					value="#{office_visit_controller.getVisitByID( OvForThisLabProc ).getDate()}">
+					<f:converter converterId="localDateTimeConverter" />
+				</h:outputText>
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">Results</f:facet>
+				<h:outputText value="#{labProc.results}" />
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">Confidence Interval</f:facet>
+				<c:set var="lower"
+					value="#{labProc.confidenceIntervalLower}" />
+				<c:set var="higher"
+					value="#{labProc.confidenceIntervalUpper}" />
+				<h:outputText value="#{lower} - #{higher}"
+					id="lowerConfidence" readonly="true" />
+			</h:column>
+
+
+			<h:column>
+				<f:facet name="header">HCP Comments</f:facet>
+				<h:outputText value="#{labProc.getCommentary()}"
+					readonly="true" />
+			</h:column>
+		</h:dataTable>
+	</c:when>
+	<c:otherwise>
+		<h2>You have no Completed Lab Procedures</h2>
+	</c:otherwise>
+</c:choose>
+<br />
+<br />
+
+<!--  Displays a table of all other lab procedures if the list isn't empty -->
+	<c:choose>
+		<c:when test="${!empty otherLPs}">
+			<h:dataTable id="otherLP" styleClass="fTable"
+				value="#{otherLPs}" var="labProc" border="1">
+				<f:facet name="header">
+					<h:outputText value="Other Lab Procedures" />
+				</f:facet>
+
+				<h:column>
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{labProc.getStatus()}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">HCP Name</f:facet>
+					<h:outputText value="#{user.getUserNameForID(labProc.hcpMID)}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Office Visit Date</f:facet>
+					<c:set var="OvForThisLabProc"
+						value="#{labProc.getOfficeVisitID()}" />
+					<h:outputText id="ovdate"
+						value="#{office_visit_controller.getVisitByID( OvForThisLabProc ).getDate()}">
+						<f:converter converterId="localDateTimeConverter" />
+					</h:outputText>
+				</h:column>
+			</h:dataTable>
+		</c:when>
+		<c:otherwise>
+			<h2>You have no other Lab Procedures</h2>
+		</c:otherwise>
+	</c:choose>
+	<br />
+	<br />
+</div>
+</html>

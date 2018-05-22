@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:itrust="/WEB-INF/tags.tld">
+ <f:view beforePhase="#{navigation_controller.redirectIfInvalidPatient()}" />
+<h:body>
+	<ui:composition template = "/iTrust_template.xhtml">
+		<ui:define name = "pageTitle">Document Office Visit</ui:define>
+		<ui:define name  = "leftMenu">
+			<ui:include src="/auth/hcp/menu.xhtml"/>
+		</ui:define>	
+		<ui:define name="mainContent">
+			<itrust:patientNav thisTitle="Office Visit" />
+			<div align="center">
+			<br />
+				<h:message for=""/>
+			</div>
+			<c:choose>
+				<c:when test="#{office_visit_controller.CurrentPatientHasVisited()}">
+				<div align="center">
+					<br />
+					<br />
+					<h2 style="font-size: 175%; font-weight: bold;">Select a previous visit to edit/view</h2>
+					<h:dataTable id="previousVisits" styleClass="fTable" value="#{office_visit_controller.getOfficeVisitsForCurrentPatient()}" 
+						var="ov"  border="1">
+						<br/>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Click the Link"/>
+							</f:facet>
+						   <h:link outcome="officeVisitInfo" value="Select">
+	      						 	<f:param name="visitID" value="#{ov.visitID}" />
+	   						</h:link>
+						</h:column>	
+	 					<h:column>
+							<f:facet name="header">
+								<h:outputText value="Date"/>
+							</f:facet>
+							<h:outputText value="#{ov.date}">
+								<f:converter converterId="localDateTimeConverter"/>
+							</h:outputText>
+						</h:column>	
+						 <h:column>
+							<f:facet name="header">
+								<h:outputText value="Location"/>
+							</f:facet>
+							<h:outputText value="#{hospital_controller.HospitalNameForID(ov.locationID)}"/>
+						</h:column>	  
+					</h:dataTable>	
+				</div>
+				<br />
+				<br />
+			</c:when>
+			<c:otherwise>
+				<br />
+				<br />
+				<div align="center">
+				<h2 style="font-size: 175%; font-weight: bold;">No Office Visits on Record for this Patient!</h2>
+				</div>
+				<br />
+				<br />
+			</c:otherwise>
+		</c:choose>
+		<div align="center">
+		<h:button style="font-size: 150%; font-weight: bold;" id="newVisitButton"
+						value="Click Here to Create a New Office Visit" outcome="officeVisitInfo" />
+		</div>
+		</ui:define>
+		
+		
+		<ui:define name="pageScripts">
+			<script>
+				$(function(){
+					window.sessionStorage.removeItem("currentTabId");
+				});
+			</script>
+		</ui:define>
+	</ui:composition>
+		
+
+</h:body>
+  
+</html>
