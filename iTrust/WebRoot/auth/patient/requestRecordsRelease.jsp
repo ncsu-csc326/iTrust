@@ -114,31 +114,31 @@ if(errorMsg != null){ %>
     <b>Recipient doctor information:</b> <br />
     <DL>
     <DD><LABEL for="recFirstName">First name: </LABEL>
-              <INPUT required type="text" id="recFirstName" name="recFirstName" value=<%= firstName.replace("\'", "&#39;") %>><BR></DD>
+              <INPUT required type="text" id="recFirstName" name="recFirstName" value="<%= firstName.replace("\"", "\\\"") %>"><BR></DD>
     <DD><LABEL for="recLastName">Last name: </LABEL>
-              <INPUT required type="text" id="recLastName" name="recLastName" value=<%= lastName.replace("\'", "&#39;") %>><BR></DD>
+              <INPUT required type="text" id="recLastName" name="recLastName" value="<%= lastName.replace("\"", "\\\"") %>"><BR></DD>
     <DD><LABEL for="recPhone">Phone number: </LABEL>
-              <INPUT required type="text" id="recPhone" name="recPhone" value=<%= phone.replace("\'", "&#39;") %>><BR></DD>
+              <INPUT required type="text" id="recPhone" name="recPhone" value="<%= phone.replace("\"", "\\\"") %>"><BR></DD>
     <DD><LABEL for="recEmail">Email address: </LABEL>
-              <INPUT required type="text" id="recEmail" name="recEmail" value=<%= email.replace("\'", "&#39;") %>><BR></DD>
-    </DL>             
+              <INPUT required type="text" id="recEmail" name="recEmail" value="<%= email.replace("\"", "\\\"") %>"><BR></DD>
+    </DL>
     <b>Recipient hospital information:</b> <br />
     <DL>
     <DD><LABEL for="recHospitalName">Hospital: </LABEL>
-              <INPUT required type="text" id="recHospitalName" name="recHospitalName" value=<%=hosName.replace("\'", "&#39;")%>><BR></DD>
+              <INPUT required type="text" id="recHospitalName" name="recHospitalName" value="<%=hosName.replace("\"", "\\\"")%>"><BR></DD>
     <DD><LABEL for="recHospitalAddress">Hospital address1: </LABEL>
-              <INPUT required type="text" id="recHospitalAddress1" name="recHospitalAddress1" value=<%=hosAddress1.replace("\'", "&#39;")%>><BR></DD>
+              <INPUT required type="text" id="recHospitalAddress1" name="recHospitalAddress1" value="<%=hosAddress1.replace("\"", "\\\"")%>"><BR></DD>
     <DD><LABEL for="recHospitalAddress">Hospital address2: </LABEL>
-              <INPUT required type="text" id="recHospitalAddress2" name="recHospitalAddress2" value=<%=hosAddress2.replace("\'", "&#39;")%>><BR></DD>
+              <INPUT required type="text" id="recHospitalAddress2" name="recHospitalAddress2" value="<%=hosAddress2.replace("\"", "\\\"")%>"><BR></DD>
     <DD><LABEL for="recHospitalCity">Hospital city: </LABEL>
-              <INPUT required type="text" id="recHospitalCity" name="recHospitalCity" value=<%=hosCity.replace("\'", "&#39;")%>><BR></DD>
+              <INPUT required type="text" id="recHospitalCity" name="recHospitalCity" value="<%=hosCity.replace("\"", "\\\"")%>"><BR></DD>
     <DD><LABEL for="recHospitalState">Hospital state: </LABEL>
-              <INPUT required type="text" id="recHospitalState" name="recHospitalState" value=<%=hosState.replace("\'", "&#39;")%>><BR></DD>
+              <INPUT required type="text" id="recHospitalState" name="recHospitalState" value="<%=hosState.replace("\"", "\\\"")%>"><BR></DD>
     <DD><LABEL for="recHospitalZip">Hospital zip: </LABEL>
-              <INPUT required type="text" id="recHospitalZip" name="recHospitalZip" value=<%=hosZip.replace("\'", "&#39;")%>><BR></DD>
+              <INPUT required type="text" id="recHospitalZip" name="recHospitalZip" value="<%=hosZip.replace("\"", "\\\"")%>"><BR></DD>
     </DL>
     <LABEL for="releaseJustification">Request justification:</LABEL><br />
-    		  <textarea id="releaseJustification" name="releaseJustification" cols="40" rows="5"><%=releaseJustification.replace("\'", "&#39;")%></textarea>
+    		  <textarea id="releaseJustification" name="releaseJustification" cols="40" rows="5"><%=releaseJustification.replace("\"", "\\\"")%></textarea>
 
     <br /><br />
     

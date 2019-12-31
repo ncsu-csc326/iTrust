@@ -56,7 +56,7 @@ List<RemoteMonitoringDataBean> data = action.getPatientDataWithoutLogging();
 		%>
 		<tr>
 			<td >
-				<a href="<%=request.getParameter("forward") %>?patient=<%= StringEscapeUtils.escapeHtml("" + (index)) %>">
+				<a href="<%=StringEscapeUtils.escapeHtml(request.getParameter("forward")) %>?patient=<%= StringEscapeUtils.escapeHtml("" + (index)) %>">
 					<%= StringEscapeUtils.escapeHtml("" + (action.getPatientName(bean.getPatientMID()))) %>	
 				</a>
 				</td>

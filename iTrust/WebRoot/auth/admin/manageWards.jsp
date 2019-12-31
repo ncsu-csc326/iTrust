@@ -21,6 +21,8 @@
 <%@page import="edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.PatientBean"%>
 
+<%@page import="org.apache.commons.lang.StringEscapeUtils"%>
+
 <!-- %@page import="edu.ncsu.csc.itrust.action.UpdateHospitalListAction"%-->
 
 
@@ -69,7 +71,7 @@ if( newWard!= null && !newWard.equals("") ){
 	// need to check if the ward already exists
 	wardDAO.addWard(bean);
 	
-	%>Ward <%=request.getParameter("ward")%> has been added<%
+	%>Ward <%=StringEscapeUtils.escapeHtml(request.getParameter("ward"))%> has been added<%
 
 // Delete a selected ward
 } else if(deleteWard!= null && !deleteWard.equals("") && request.getParameter("removeWard") != null){

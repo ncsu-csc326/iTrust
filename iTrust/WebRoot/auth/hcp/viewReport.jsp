@@ -13,6 +13,7 @@
 <%@page import="java.io.ByteArrayInputStream" %>
 <%@page import="java.io.InputStream" %>
 <%@page import="java.io.IOException" %>
+<%@page import="org.apache.commons.lang.StringEscapeUtils"%>
 <%@page errorPage="/auth/exceptionHandler.jsp"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -56,7 +57,7 @@ if(!noParameters){
 	<p>Using filters:<br />
 	<%
 	for (int i=0 ; i < gpga.getReportFilterTypes().size();i++) {
-		out.println("Filter by " + gpga.getReportFilterTypes().get(i) + " with value " + gpga.getReportFilterValues().get(i) + "<br />");
+		out.println("Filter by " + StringEscapeUtils.escapeHtml(gpga.getReportFilterTypes().get(i)) + " with value " + StringEscapeUtils.escapeHtml(gpga.getReportFilterValues().get(i)) + "<br />");
 	}
 	%>
 	</p>
@@ -68,13 +69,13 @@ if(!noParameters){
 		<table border="1" cellpadding="5" cellspacing="0" class="fTable" id="report"><tr>
 		<%
 		for(int i = 0 ; i < gpga.getReportHeaders().size();i++) {
-			out.print("<th>" + gpga.getReportHeaders().get(i) + "</th>");
+			out.print("<th>" + StringEscapeUtils.escapeHtml(gpga.getReportHeaders().get(i)) + "</th>");
 		}
 
 		for(int i = 0 ; i < gpga.getReportData().size(); i++) {
 			out.print("<tr>");
 			for(int j = 0 ; j < gpga.getReportData().get(i).size();j++) {
-				out.print("<td><div class=\"content\">" + gpga.getReportData().get(i).get(j).replace("\n", "<br />") + "</div></td>");
+				out.print("<td><div class=\"content\">" + StringEscapeUtils.escapeHtml(gpga.getReportData().get(i).get(j)).replace("\n", "<br />") + "</div></td>");
 			}
 			out.print("</tr>");
 		}

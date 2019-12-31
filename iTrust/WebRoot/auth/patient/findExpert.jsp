@@ -16,6 +16,8 @@
 <%@page import="edu.ncsu.csc.itrust.model.old.beans.PersonnelBean"%>
 <%@page import="edu.ncsu.csc.itrust.model.old.dao.mysql.PatientDAO"%>
 <%@page import="java.util.HashMap"%>
+<%@page import="org.apache.commons.lang.StringEscapeUtils"%>
+
 
 <%@include file="/global.jsp" %>
 
@@ -62,7 +64,7 @@
 	</div><br>
 	<div class="form-group">
 		<label style="margin-left: 10px;" for="zipCode">ZIP Code:</label>
-		<input class="form-control" type="text" name="zipCode" value=<%=zipCode%>>
+		<input class="form-control" type="text" name="zipCode" value="<%=StringEscapeUtils.escapeHtml(zipCode)%>">
 	</div><br>
 	<div class="form-group">
 		<label style="margin-left: 10px;" for="range">Distance From ZIP Code: </label>
